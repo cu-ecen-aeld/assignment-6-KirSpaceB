@@ -13,32 +13,26 @@ SRC_URI = "git://git@github.com/cu-ecen-aeld/assignments-3-and-later-KirSpaceB.g
 SRC_URI += "file://aesdsocket-init"
 PV = "1.0+git${SRCPV}"
 # TODO: set to reference a specific commit hash in your assignment repo
-SRCREV = "6dcffcf4216a4f26433d4413565ed4540831ad3e"
+SRCREV = "4f30734e093ec8182725e44fae134de0ca4f7ded"
 # This sets your staging directory based on WORKDIR, where WORKDIR is defined at 
 # https://docs.yoctoproject.org/ref-manual/variables.html?highlight=workdir#term-WORKDIR
 # We reference the "server" directory here to build from the "server" directory
 # in your assignments repo
 S = "${WORKDIR}/git/server"
-
 # TODO: Add the aesdsocket application and any other files you need to install
 # See https://git.yoctoproject.org/poky/plain/meta/conf/bitbake.conf?h=kirkstone
 FILES:${PN} += "${bindir}/aesdsocket"
 FILES:${PN} += "${sysconfdir}/init.d/aesdsocket"
 # TODO: customize these as necessary for any libraries you need for your application
 # (and remove comment)
-TARGET_LDFLAGS += "-pthread -lrt"
 
 do_configure () {
 	:
 }
 
 do_compile () {
-        CROSS_COMPILE="${TARGET_PREFIX}" \
-        CC="${CC}" \
-        LD="${LD}" \
-        AR="${AR}" \
-        STRIP="${STRIP}" \
-        OBJCOPY="${OBJCOPY}"
+  oe_runmake
+
 }
 
 do_install () {
@@ -51,6 +45,7 @@ do_install () {
 	# See example at https://github.com/cu-ecen-aeld/ecen5013-yocto/blob/ecen5013-hello-world/meta-ecen5013/recipes-ecen5013/ecen5013-hello-world/ecen5013-hello-world_git.bb
     install -d ${D}${bindir}
     install -m 0755 ${S}/aesdsocket ${D}${bindir}/aesdsocket
+
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/aesdsocket-init ${D}${sysconfdir}/init.d/aesdsocket
 }
