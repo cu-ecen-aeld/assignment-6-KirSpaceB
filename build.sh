@@ -12,7 +12,7 @@ source poky/oe-init-build-env
 # Point bitbake to local git checkout instead of fetching via SSH
 WORKSPACE_DIR=$(cd .. && pwd)
 PREMIRROR_LINE="PREMIRRORS:prepend = \"git://git@github.com/cu-ecen-aeld/assignments-3-and-later-KirSpaceB.git git://${WORKSPACE_DIR};protocol=file \n\""
-cat conf/local.conf | grep "PREMIRRORS" > /dev/null
+cat conf/local.conf | grep "PREMIRRORS:prepend" > /dev/null
 premirror_info=$?
 if [ $premirror_info -ne 0 ]; then
     echo "Adding PREMIRRORS to local.conf"
